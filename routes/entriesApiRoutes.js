@@ -3,8 +3,10 @@ const express = require('express');
 const entriesApiController = require("../controllers/entriesApiController");
 const entriesApiRouter = express.Router();
 
+entriesApiRouter.get('/all',entriesApiController.getAllEntries)
 entriesApiRouter.get('/',entriesApiController.getEntries);
-// entriesApiRouter.post('/',entriesApiController.createEntry);
+
+entriesApiRouter.post('/',entriesApiController.createEntry);
 
 module.exports = entriesApiRouter;
 
