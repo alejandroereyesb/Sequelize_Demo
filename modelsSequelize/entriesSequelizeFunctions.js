@@ -1,38 +1,38 @@
-const Sequelize = require('sequelize');
-const {Entry, Authors} = require('./entrySequelizeSchema');
+const Entry = require('./entrySequelizeSchema');
 
-const getEntriesByEmail = async(id) =>{
+const getEntriesByEmail = async (id) => {
     try {
         const response = await Entry.findAll({
-            // include: { model: Authors },
-            where: { id_entry: id}
-          });
+            include: { model: Authors },
+            where: { id_entry: id }
+        });
         return response
     } catch (error) {
         console.log(error);
     }
 }
 
-const getAllEntries = async () =>{
+const getAllEntries = async () => {
     try {
         const response = await Entry.findAll();
-        return response 
+        return response
     } catch (error) {
         console.log(error);
+        throw error;
     }
 }
 
 const createEntry = async (entry) => {
     const { title, content, date, category } = entry;
     try {
-        const response = await Entry.create({title, content, category});
-        return response  
+        const response = await Entry.create({ title, content, category });
+        return response
     } catch (error) {
         console.log(error);
     }
 }
 
-module.exports= {
+module.exports = {
     getEntriesByEmail,
     getAllEntries,
     createEntry

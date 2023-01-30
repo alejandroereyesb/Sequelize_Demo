@@ -9,6 +9,10 @@ const whale = require('cowsay2/cows/whale');
 const productsRoutes = require('./routes/productsRoutes');
 const productsApiRoutes = require('./routes/productsApiRoutes');
 const entriesApiRoutes = require('./routes/entriesApiRoutes');
+const authorsApiRouter = require('./routes/authorsApiRoutes');
+
+//relaciones tablas
+require('./modelsSequelize/associations');
 
 // Tu propio módulo
 //const calc = require('./utils/calculator.js');
@@ -16,14 +20,14 @@ const calc = require('./utils/calculator');
 
 // Middlewares
 const manage404 = require('./middlewares/error404');
-const checkApiKey = require('./middlewares/auth_API_KEY'); 
+const checkApiKey = require('./middlewares/auth_API_KEY');
 
 const app = express()
 const port = 3000
 
 // View engine
 app.set('view engine', 'pug');
-app.set('views','./views');
+app.set('views', './views');
 
 //Permite leer el body recibido en una petición
 app.use(express.json());
@@ -36,10 +40,11 @@ app.use(express.json());
 //app.use("/products",checkApiKey,productsRoutes);
 
 // WEB
-app.use("/products",productsRoutes);
+app.use("/products", productsRoutes);
 // API
-app.use("/api/products",productsApiRoutes);
-app.use("/api/entries",entriesApiRoutes);
+app.use("/api/products", productsApiRoutes);
+app.use("/api/entries", entriesApiRoutes);
+app.use("/api/authors", authorsApiRouter);
 /*
 WEB
 http://localhost:3000/products GET
@@ -60,9 +65,9 @@ app.get('/', (req, res) => {
     console.log(emoji);
     console.log(cowsay.say('Hola que tal?', { cow: owl }));
     //res.send('Hola desde mi primer servidor :) !!!!'+emoji)
-    let msj = 'Hola desde mi primer servidor :) !!!!'+emoji;
+    let msj = 'Hola desde mi primer servidor :) !!!!' + emoji;
     // res.render("my_view.pug",{section:"Home",msj});
-    res.render("my_view",{section:"Home",msj});
+    res.render("my_view", { section: "Home", msj });
 })
 
 // http://localhost:3000/pokemon/charmander
@@ -81,15 +86,15 @@ app.get('/pokemon/:name?', (req, res) => {
     }
     console.log(cowsay.say(msj, { cow: owl })); // Imprime el buho con msj
     //res.send(msj+" "+emoji);
-    res.render("my_view",{section:"Pokemon",msj});
+    res.render("my_view", { section: "Pokemon", msj });
 })
 
 app.get('/perritos', (req, res) => {
-    let msj = "¿cuánto son 2+2?: "+calc.add(2,2);
+    let msj = "¿cuánto son 2+2?: " + calc.add(2, 2);
     console.log(cowsay.say(msj, { cow: owl }));
-    let msj2 = 'Aquí te enviaría mis perritos y...'+msj+" "+emoji;
+    let msj2 = 'Aquí te enviaría mis perritos y...' + msj + " " + emoji;
     // res.send('Aquí te enviaría mis perritos y...'+msj+" "+emoji)
-    res.render("my_view",{section:"Perritos",msj:msj2});
+    res.render("my_view", { section: "Perritos", msj: msj2 });
 })
 
 // Middleware error
